@@ -63,4 +63,36 @@ const createPlace = (req, res, next) => {
   res.status(201).json({ place: createdPlace });
 };
 
-export { getPlaceById, getPlaceByUserId, createPlace };
+const updatePlace = (req, res, next) => {
+  const { title, description } = req.body;
+  const { placeId } = req.params;
+
+  const placeIndex = DUMMY_PLACES.findIndex((place) => place.id === placeId);
+
+  const updatedPlace = { ...DUMMY_PLACES[placeIndex] };
+
+  if (!updatedPlace) {
+    return next(new HttpError('There is not a place with this id.'));
+  }
+
+  updatedPlace.title = title;
+  updatedPlace.description = description;
+
+  DUMMY_PLACES[placeIndex] = updatedPlace;
+
+  res.status(200).json({ place: updatedPlace });
+};
+
+const deletePlace = (req, res, next) => {
+  const { placeId } = req.params;
+  DUMMY_PLACES = DUMMY_PLACES.filter((place) => place.id !== placeId);
+  res.status(200).json({ message: 'Deleted place.' });
+};
+
+export {
+  getPlaceById,
+  getPlaceByUserId,
+  createPlace,
+  updatePlace,
+  deletePlace,
+};

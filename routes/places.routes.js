@@ -5,14 +5,20 @@ import {
   getPlaceById,
   getPlaceByUserId,
   createPlace,
+  updatePlace,
+  deletePlace,
 } from '../controllers/places.controller.js';
 
 const router = Router();
 
-router.get('/:placeId', getPlaceById);
+router.post('/', createPlace);
+
+router
+  .route('/:placeId')
+  .get(getPlaceById)
+  .patch(updatePlace)
+  .delete(deletePlace);
 
 router.get('/user/:userId', getPlaceByUserId);
-
-router.post('/', createPlace);
 
 export default router;
