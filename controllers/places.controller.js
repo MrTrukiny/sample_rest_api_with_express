@@ -1,3 +1,5 @@
+// import uuid from 'uuid/v4';
+import { v4 as uuid } from 'uuid';
 import HttpError from '../models/http-error.model.js';
 
 const DUMMY_PLACES = [
@@ -44,4 +46,21 @@ const getPlaceByUserId = (req, res, next) => {
   res.json({ place });
 };
 
-export { getPlaceById, getPlaceByUserId };
+const createPlace = (req, res, next) => {
+  const { title, description, coordinates, address, creator } = req.body;
+  // const title = req.body.title;
+  const createdPlace = {
+    id: uuid(),
+    title,
+    description,
+    location: coordinates,
+    address,
+    creator,
+  };
+
+  DUMMY_PLACES.push(createdPlace); // unshift(createdPlace)
+
+  res.status(201).json({ place: createdPlace });
+};
+
+export { getPlaceById, getPlaceByUserId, createPlace };
