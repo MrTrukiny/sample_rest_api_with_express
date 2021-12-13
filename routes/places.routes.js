@@ -3,7 +3,7 @@ import { Router } from 'express';
 // Controllers
 import {
   getPlaceById,
-  getPlaceByUserId,
+  getPlacesByUserId,
   createPlace,
   updatePlace,
   deletePlace,
@@ -19,6 +19,6 @@ router
   .patch(updatePlace)
   .delete(deletePlace);
 
-router.get('/user/:userId', getPlaceByUserId);
+router.get('/user/:userId', getPlacesByUserId);
 
 export default router;
