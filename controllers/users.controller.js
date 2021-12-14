@@ -1,4 +1,5 @@
 import { v4 as uuid } from 'uuid';
+import { validationResult } from 'express-validator';
 
 import HttpError from '../models/http-error.model.js';
 
@@ -16,6 +17,10 @@ const getUsers = (req, res, next) => {
 };
 
 const signupUser = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(errors);
+  }
   const { name, email, password } = req.body;
 
   const hasUser = DUMMY_USERS.find((user) => user.email === email);

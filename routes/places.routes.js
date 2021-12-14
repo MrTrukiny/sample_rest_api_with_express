@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { body } from 'express-validator';
 
 // Controllers
 import {
@@ -11,12 +12,22 @@ import {
 
 const router = Router();
 
-router.post('/', createPlace);
+router.post(
+  '/',
+  body('title', 'Title is required!').notEmpty(),
+  body('description').isLength({ min: 5, max: 32 }),
+  body('address').notEmpty(),
+  createPlace
+);
 
 router
   .route('/:placeId')
   .get(getPlaceById)
-  .patch(updatePlace)
+  .patch(
+    body('title').notEmpty(),
+    body('description').isLength({ min: 5, max: 32 }),
+    updatePlace
+  )
   .delete(deletePlace);
 
 router.get('/user/:userId', getPlacesByUserId);
