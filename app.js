@@ -1,5 +1,7 @@
 import express from 'express';
 import { Result } from 'express-validator';
+import mongoose from 'mongoose';
+import 'colors';
 
 // Routes
 import placesRoutes from './routes/places.routes.js';
@@ -10,6 +12,8 @@ import HttpError from './models/http-error.model.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+const MONGO_URI =
+  process.env.MONGO_URI || 'mongodb://localhost:27017/places_app';
 
 app.use(express.json());
 
@@ -32,4 +36,20 @@ app.use((error, req, res, next) => {
   res.json({ error: error.message || 'An unknown error occurred!' });
 });
 
-app.listen(PORT, console.log(`Server is running on PORT: ${PORT}`));
+mongoose
+  .connect(MONGO_URI)
+  .then((connection) =>
+    console.log(
+      `MongoDb Connected: ${connection.connection.host}`.cyan.underline.bold
+    )
+  )
+  .catch((error) => console.log(`MongoDB connection error: ${error}`.red.bold));
+
+app.listen(
+  PORT,
+  console.log(
+    `Server running in ${
+      process.env.NODE_ENV || 'development'
+    } mode on port ${PORT}`.yellow.bold
+  )
+);
