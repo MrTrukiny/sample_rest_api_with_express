@@ -23,16 +23,32 @@ const DUMMY_PLACES = [
   },
 ];
 
-const getPlaceById = (req, res, next) => {
+const getPlaceById = async (req, res, next) => {
   const { placeId } = req.params; // { pid: 'p1' }
 
-  const place = DUMMY_PLACES.find((place) => {
-    return place.id === placeId;
-  });
+  let place;
+  try {
+    place = await Place.findById(placeId);
+    // place = await Place.findById(placeId).select('-__v');
+  } catch (error) {
+    return next(
+      new HttpError('Something went wrong, could not find a place.', 500)
+    );
+  }
 
   if (!place) {
-    throw new HttpError('Could not find a place for the provided id.', 404);
+    return next(
+      new HttpError('Could not find a place for the provided id.', 404)
+    );
   }
+
+  console.log('Place', place);
+  console.log('Object Plain', place.toObject());
+  console.log(
+    'Object Options',
+    place.toObject({ getters: true, versionKey: false })
+  );
+  console.log('JSON', JSON.stringify(place));
 
   res.json({ place }); // => { place } => { place: place }
 };
