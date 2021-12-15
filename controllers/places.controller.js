@@ -50,7 +50,7 @@ const getPlacesByUserId = (req, res, next) => {
   res.json({ places });
 };
 
-const createPlace = (req, res, next) => {
+const createPlace = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -60,16 +60,17 @@ const createPlace = (req, res, next) => {
   const { title, description, address, creator } = req.body;
 
   let coordinates;
-  getCoordsForAddress(address)
+  // Then / catch
+  /* getCoordsForAddress(address)
     .then((response) => (coordinates = response))
-    .catch((error) => next(error));
+    .catch((error) => next(error)); */
 
   // Async / await
-  /* try {
+  try {
     coordinates = await getCoordsForAddress(address);
   } catch (error) {
     return next(error);
-  } */
+  }
 
   const createdPlace = {
     id: uuid(),
