@@ -1,6 +1,6 @@
-// import mongoose from 'mongoose';
-// const { Schema, model } = mongoose;
-import { Schema, model } from 'mongoose';
+import mongoose from 'mongoose';
+const { Schema, model } = mongoose;
+// import { Schema, model } from 'mongoose';
 
 const placeSchema = new Schema({
   title: { type: String, required: true },

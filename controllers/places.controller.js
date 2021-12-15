@@ -2,6 +2,9 @@
 import { v4 as uuid } from 'uuid';
 import { validationResult } from 'express-validator';
 
+// Models
+import Place from '../models/Place.schema.js';
+
 // Utils
 import HttpError from '../models/http-error.model.js';
 import { getCoordsForAddress } from '../utils/location.js';
@@ -72,16 +75,20 @@ const createPlace = async (req, res, next) => {
     return next(error);
   }
 
-  const createdPlace = {
-    id: uuid(),
+  const createdPlace = new Place({
     title,
     description,
     location: coordinates,
     address,
+    image: 'imageUrl',
     creator,
-  };
+  });
 
-  DUMMY_PLACES.push(createdPlace); // unshift(createdPlace)
+  try {
+    await createdPlace.save();
+  } catch (error) {
+    return next(HttpError('Creating place failed, please try again.', 500));
+  }
 
   res.status(201).json({ place: createdPlace });
 };
