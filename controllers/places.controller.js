@@ -2,7 +2,9 @@
 import { v4 as uuid } from 'uuid';
 import { validationResult } from 'express-validator';
 
+// Utils
 import HttpError from '../models/http-error.model.js';
+import { getCoordsForAddress } from '../utils/location.js';
 
 const DUMMY_PLACES = [
   {
@@ -54,8 +56,21 @@ const createPlace = (req, res, next) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { title, description, coordinates, address, creator } = req.body;
   // const title = req.body.title;
+  const { title, description, address, creator } = req.body;
+
+  let coordinates;
+  getCoordsForAddress(address)
+    .then((response) => (coordinates = response))
+    .catch((error) => next(error));
+
+  // Async / await
+  /* try {
+    coordinates = await getCoordsForAddress(address);
+  } catch (error) {
+    return next(error);
+  } */
+
   const createdPlace = {
     id: uuid(),
     title,
