@@ -1,3 +1,4 @@
+import dotenv from 'dotenv';
 import express from 'express';
 import { Result } from 'express-validator';
 import mongoose from 'mongoose';
@@ -10,7 +11,11 @@ import usersRoutes from './routes/users.routes.js';
 // Utils
 import HttpError from './models/http-error.model.js';
 
+// Call dotenv for load ENV variables from .env
+dotenv.config();
+
 const app = express();
+
 const PORT = process.env.PORT || 3001;
 const MONGO_URI =
   process.env.MONGO_URI || 'mongodb://localhost:27017/places_app';

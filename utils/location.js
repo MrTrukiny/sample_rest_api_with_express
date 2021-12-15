@@ -12,8 +12,9 @@ export const getCoordsForAddress = async (address) => {
   );
 
   const { data } = response;
+  console.log(API_KEY);
 
-  if (!data || data.status === 'ZERO RESULTS') {
+  if (!data || data.status === 'ZERO_RESULTS') {
     const error = new HttpError(
       'Could not find location fot the specified address.',
       404
