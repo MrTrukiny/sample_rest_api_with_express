@@ -1,4 +1,4 @@
-import dotenv from 'dotenv';
+// import dotenv from 'dotenv';
 import express from 'express';
 import { Result } from 'express-validator';
 import mongoose from 'mongoose';
@@ -12,7 +12,7 @@ import usersRoutes from './routes/users.routes.js';
 import HttpError from './models/http-error.model.js';
 
 // Call dotenv for load ENV variables from .env
-dotenv.config();
+// dotenv.config();
 
 const app = express();
 
