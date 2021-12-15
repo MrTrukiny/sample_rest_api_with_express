@@ -1,8 +1,9 @@
 import axios from 'axios';
 
 import HttpError from '../models/http-error.model.js';
+import ENV, { nodEnv } from '../config/index.js';
 
-const API_KEY = process.env.GEOCODING_API_KEY || 'YOUR_API_KEY';
+const API_KEY = ENV[nodEnv].geocoding.apiKey || 'YOUR_API_KEY';
 const GEOCODING_API_URL =
   'https://maps.googleapis.com/maps/api/geocode/json?address=';
 

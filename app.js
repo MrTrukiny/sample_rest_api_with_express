@@ -10,15 +10,15 @@ import usersRoutes from './routes/users.routes.js';
 
 // Utils
 import HttpError from './models/http-error.model.js';
+import ENV, { port, nodEnv } from './config/index.js';
 
 // Call dotenv for load ENV variables from .env
 // dotenv.config();
 
 const app = express();
 
-const PORT = process.env.PORT || 3001;
-const MONGO_URI =
-  process.env.MONGO_URI || 'mongodb://localhost:27017/places_app';
+const MONGO_URI = ENV[nodEnv].database.mongoUri;
+const PORT = port;
 
 app.use(express.json());
 
@@ -52,9 +52,5 @@ mongoose
 
 app.listen(
   PORT,
-  console.log(
-    `Server running in ${
-      process.env.NODE_ENV || 'development'
-    } mode on port ${PORT}`.yellow.bold
-  )
+  console.log(`Server running in ${nodEnv} mode on port ${PORT}`.yellow.bold)
 );
