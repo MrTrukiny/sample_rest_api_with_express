@@ -103,7 +103,8 @@ const createPlace = async (req, res, next) => {
     description,
     location: coordinates,
     address,
-    image: 'imageUrl',
+    image:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Empire_State_Building_%28aerial_view%29.jpg/400px-Empire_State_Building_%28aerial_view%29.jpg',
     creator,
   });
 
@@ -175,7 +176,7 @@ const updatePlace = async (req, res, next) => {
   res.status(200).json({ place });
 };
 
-const deletePlace = (req, res, next) => {
+const deletePlace = async (req, res, next) => {
   const { placeId } = req.params;
 
   try {
