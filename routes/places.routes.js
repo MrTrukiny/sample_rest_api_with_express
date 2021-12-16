@@ -15,7 +15,7 @@ const router = Router();
 router.post(
   '/',
   body('title', 'Title is required!').notEmpty(),
-  body('description').isLength({ min: 5, max: 32 }),
+  body('description').isLength({ min: 5, max: 200 }),
   body('address').notEmpty(),
   createPlace
 );
@@ -25,7 +25,7 @@ router
   .get(getPlaceById)
   .patch(
     body('title').notEmpty(),
-    body('description').isLength({ min: 5, max: 32 }),
+    body('description').isLength({ min: 5, max: 200 }),
     updatePlace
   )
   .delete(deletePlace);
