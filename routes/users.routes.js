@@ -1,5 +1,4 @@
 import { Router } from 'express';
-
 import { body } from 'express-validator';
 
 // Controllers
@@ -15,7 +14,7 @@ router.get('/', getUsers);
 router.post(
   '/signup',
   body('name').notEmpty(),
-  body('email').isEmail().normalizeEmail(), // Test@TesT.coM
+  body('email').isEmail().normalizeEmail(), // Test@TesT.coM => test@test.com
   body('password').isLength({ min: 6, max: 12 }),
   signupUser
 );

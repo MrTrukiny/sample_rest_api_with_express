@@ -1,4 +1,3 @@
-// import { v4 as uuid } from 'uuid';
 import { validationResult } from 'express-validator';
 
 // Models
@@ -6,45 +5,22 @@ import User from '../models/User.schema.js';
 
 // Utils
 import HttpError from '../models/http-error.model.js';
+import { asyncHandler } from '../middlewares/asyncHandler.middleware.js';
 
-const DUMMY_USERS = [
-  {
-    id: 'u1',
-    name: 'Eduardo Hernández',
-    email: 'test@test.com',
-    password: 'testers',
-  },
-];
+const getUsers = asyncHandler(async (req, res, next) => {
+  const users = await User.find().select('-__v');
 
-const getUsers = async (req, res, next) => {
-  let users;
-  try {
-    // users = await User.find({}, '-password');
-    users = await User.find().select('-password');
-  } catch (error) {
-    return next(
-      new HttpError('Fetching users failed, please try again later.', 500)
-    );
-  }
+  res.status(200).json({ data: users, status: 'OK' });
+});
 
-  res.json({ users });
-};
-
-const signupUser = async (req, res, next) => {
+const signupUser = asyncHandler(async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return next(errors);
   }
   const { name, email, password } = req.body;
 
-  let existingUser;
-  try {
-    existingUser = await User.findOne({ email });
-  } catch (error) {
-    return next(
-      new HttpError('Signing up failed, please try again later.', 500)
-    );
-  }
+  const existingUser = await User.findOne({ email });
 
   if (existingUser) {
     return next(
@@ -59,28 +35,15 @@ const signupUser = async (req, res, next) => {
     password,
   });
 
-  try {
-    await newUser.save();
-  } catch (error) {
-    return next(
-      new HttpError('Signing up failed, please try again later.', 500)
-    );
-  }
+  await newUser.save();
 
-  res.status(201).json({ user: newUser });
-};
+  res.status(201).json({ data: newUser, status: 'OK' });
+});
 
-const loginUser = async (req, res, next) => {
+const loginUser = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
 
-  let existingUser;
-  try {
-    existingUser = await User.findOne({ email });
-  } catch (error) {
-    return next(
-      new HttpError('Logging in failed, please try again later.', 500)
-    );
-  }
+  const existingUser = await User.findOne({ email }).select('+password');
 
   if (!existingUser || existingUser.password !== password) {
     return next(
@@ -88,7 +51,7 @@ const loginUser = async (req, res, next) => {
     );
   }
 
-  res.json({ message: 'Logged in!' });
-};
+  res.status(200).json({ message: 'Logged in!', status: 'OK' });
+});
 
 export { getUsers, signupUser, loginUser };

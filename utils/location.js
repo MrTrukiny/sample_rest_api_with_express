@@ -3,7 +3,7 @@ import axios from 'axios';
 import HttpError from '../models/http-error.model.js';
 import ENV, { nodEnv } from '../config/index.js';
 
-const API_KEY = ENV[nodEnv].geocoding.apiKey || 'YOUR_API_KEY';
+const API_KEY = ENV[nodEnv].geocoding.apiKey;
 const GEOCODING_API_URL =
   'https://maps.googleapis.com/maps/api/geocode/json?address=';
 
@@ -13,7 +13,6 @@ export const getCoordsForAddress = async (address) => {
   );
 
   const { data } = response;
-  console.log(API_KEY);
 
   if (!data || data.status === 'ZERO_RESULTS') {
     const error = new HttpError(
