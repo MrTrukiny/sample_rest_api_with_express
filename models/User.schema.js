@@ -23,7 +23,7 @@ const userSchema = new Schema({
     required: [true, 'User email required.'],
     unique: true,
   },
-  password: { type: String, required: true, minlength: 6 },
+  password: { type: String, required: true, minlength: 6, select: false },
   image: { type: String, required: true },
   places: { type: String, required: true },
 });
