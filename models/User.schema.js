@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-const { Schema, model, plugin } = mongoose;
+const { Schema, model, Types } = mongoose;
 // import { Schema, model, plugin } from 'mongoose';
 // import uniqueValidator from 'mongoose-unique-validator';
 
@@ -25,7 +25,7 @@ const userSchema = new Schema({
   },
   password: { type: String, required: true, minlength: 6, select: false },
   image: { type: String, required: true },
-  places: { type: String, required: true },
+  places: [{ type: Types.ObjectId, required: true, ref: 'Place' }],
 });
 
 // plugin(uniqueValidator);
