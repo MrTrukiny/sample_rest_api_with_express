@@ -6,9 +6,9 @@ import Place from '../models/Place.schema.js';
 import User from '../models/User.schema.js';
 
 // Utils
-import { asyncHandler } from '../middlewares/asyncHandler.middleware.js';
 import HttpError from '../models/http-error.model.js';
 import { getCoordsForAddress } from '../utils/location.js';
+import { asyncHandler } from '../middlewares/asyncHandler.middleware.js';
 
 const getPlaceById = asyncHandler(async (req, res, next) => {
   const { placeId } = req.params;
@@ -47,7 +47,7 @@ const createPlace = asyncHandler(async (req, res, next) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-
+  
   const { title, description, address, creator } = req.body;
 
   const coordinates = await getCoordsForAddress(address);
