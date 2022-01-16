@@ -15,7 +15,7 @@ const router = Router();
 router.post(
   '/',
   body('title', 'Title is required!').notEmpty(),
-  body('description').isLength({ min: 5, max: 200 }),
+  body('description', 'Description must be between 5 and 200 chars.').isLength({ min: 5, max: 200 }),
   body('address').notEmpty(),
   createPlace
 );
