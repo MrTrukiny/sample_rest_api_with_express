@@ -68,7 +68,6 @@ const createPlace = asyncHandler(async (req, res, next) => {
     return next(new HttpError('Could not find user for provided id', 404));
   }
 
-  // Mongoose Transaction
   const session = await mongoose.startSession();
   await session.withTransaction(async () => {
     await newPlace.save({ session });
@@ -76,7 +75,6 @@ const createPlace = asyncHandler(async (req, res, next) => {
     await user.save({ session });
   });
   await session.endSession();
-  // Finish Mongoose Transaction
 
   res.status(201).json({ data: { place: newPlace }, status: 'OK' });
 });

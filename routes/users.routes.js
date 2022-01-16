@@ -14,7 +14,7 @@ router.get('/', getUsers);
 router.post(
   '/signup',
   body('name').notEmpty(),
-  body('email').isEmail().normalizeEmail(), // Test@TesT.coM => test@test.com
+  body('email').isEmail().normalizeEmail(),
   body('password').isLength({ min: 6, max: 12 }),
   signupUser
 );

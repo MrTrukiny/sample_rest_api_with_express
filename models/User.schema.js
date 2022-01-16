@@ -1,7 +1,5 @@
 import mongoose from 'mongoose';
 const { Schema, model, Types } = mongoose;
-// import { Schema, model, plugin } from 'mongoose';
-// import uniqueValidator from 'mongoose-unique-validator';
 
 const userSchema = new Schema({
   name: { type: String, required: true },
@@ -27,7 +25,5 @@ const userSchema = new Schema({
   image: { type: String, required: true },
   places: [{ type: Types.ObjectId, required: true, ref: 'Place' }],
 });
-
-// plugin(uniqueValidator);
 
 export default model('User', userSchema);
