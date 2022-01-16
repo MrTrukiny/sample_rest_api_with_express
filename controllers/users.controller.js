@@ -10,7 +10,7 @@ import { asyncHandler } from '../middlewares/asyncHandler.middleware.js';
 const getUsers = asyncHandler(async (req, res, next) => {
   const users = await User.find().select('-__v');
 
-  res.status(200).json({ data: users, status: 'OK' });
+  res.status(200).json({ data: { users }, status: 'OK' });
 });
 
 const signupUser = asyncHandler(async (req, res, next) => {
@@ -37,7 +37,10 @@ const signupUser = asyncHandler(async (req, res, next) => {
 
   await newUser.save();
 
-  res.status(201).json({ data: newUser, status: 'OK' });
+  const user = newUser.toObject();
+  delete user.password;
+
+  res.status(201).json({ data: { user }, status: 'OK' });
 });
 
 const loginUser = asyncHandler(async (req, res, next) => {
@@ -50,8 +53,14 @@ const loginUser = asyncHandler(async (req, res, next) => {
       new HttpError('Invalid credentials, could not log you in.', 401)
     );
   }
+  const user = existingUser.toObject();
+  delete user.password;
 
-  res.status(200).json({ message: 'Logged in!', status: 'OK' });
+  res.status(200).json({
+    data: { user },
+    message: 'Logged in!',
+    status: 'OK',
+  });
 });
 
 export { getUsers, signupUser, loginUser };

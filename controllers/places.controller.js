@@ -21,7 +21,7 @@ const getPlaceById = asyncHandler(async (req, res, next) => {
     );
   }
 
-  res.status(200).json({ data: place, status: 'OK' });
+  res.status(200).json({ data: { place }, status: 'OK' });
 });
 
 const getPlacesByUserId = asyncHandler(async (req, res, next) => {
@@ -39,7 +39,7 @@ const getPlacesByUserId = asyncHandler(async (req, res, next) => {
 
   const { places } = userWithPlaces;
 
-  res.status(200).json({ data: places, status: 'OK' });
+  res.status(200).json({ data: { places }, status: 'OK' });
 });
 
 const createPlace = asyncHandler(async (req, res, next) => {
@@ -78,7 +78,7 @@ const createPlace = asyncHandler(async (req, res, next) => {
   await session.endSession();
   // Finish Mongoose Transaction
 
-  res.status(201).json({ data: newPlace, status: 'OK' });
+  res.status(201).json({ data: { place: newPlace }, status: 'OK' });
 });
 
 const updatePlace = asyncHandler(async (req, res, next) => {
@@ -96,7 +96,7 @@ const updatePlace = asyncHandler(async (req, res, next) => {
     { new: true }
   ).select('-__v');
 
-  res.status(200).json({ data: place, status: 'OK' });
+  res.status(200).json({ data: { place }, status: 'OK' });
 });
 
 const deletePlace = asyncHandler(async (req, res, next) => {
